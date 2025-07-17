@@ -1,0 +1,22 @@
+{
+  "name": "telegram-image-bot",
+  "version": "1.0.0",
+  "description": "Telegram bot that queues images and posts them hourly",
+  "main": "bot.js",
+  "scripts": {
+    "start": "node bot.js",
+    "schedule": "node scheduler.js",
+    "docker:build": "docker build -t telegram-image-bot .",
+    "docker:run": "docker run -d --name telegram-image-bot --env-file .env telegram-image-bot",
+    "docker:compose": "docker-compose up -d",
+    "docker:logs": "docker logs -f telegram-image-bot",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": ["telegram", "bot", "scheduler", "images"],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "node-telegram-bot-api": "^0.61.0",
+    "dotenv": "^16.0.3"
+  }
+}

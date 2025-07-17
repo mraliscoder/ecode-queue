@@ -1,0 +1,24 @@
+services:
+  telegram-bot:
+    build: .
+    container_name: telegram-image-bot
+    restart: unless-stopped
+    env_file:
+      - .env
+    volumes:
+      - ./image_queue:/app/image_queue
+      - ./logs:/app/logs
+    environment:
+      - NODE_ENV=production
+      - QUEUE_DIR=/app/image_queue
+    healthcheck:
+      test: ["CMD", "node", "-e", "process.exit(0)"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
