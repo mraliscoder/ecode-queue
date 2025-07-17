@@ -19,8 +19,8 @@ COPY . .
 # Create directories
 RUN mkdir -p /app/image_queue /app/logs
 
-# Create cron job file
-RUN echo "0 * * * * cd /app && node scheduler.js >> /app/logs/scheduler.log 2>&1" > /etc/crontabs/root
+# Create cron job file for every 30 minutes
+RUN echo "*/30 * * * * cd /app && node scheduler.js >> /app/logs/scheduler.log 2>&1" > /etc/crontabs/root
 
 # Make sure cron has proper permissions
 RUN chmod 0644 /etc/crontabs/root

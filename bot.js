@@ -2,6 +2,7 @@ const TelegramBot = require('node-telegram-bot-api');
 const fs = require('fs');
 const path = require('path');
 const https = require('https');
+const { v4: uuidv4 } = require('uuid');
 require('dotenv').config();
 
 // Bot configuration
@@ -86,7 +87,9 @@ bot.on('photo', async (msg) => {
         // Get the highest resolution photo
         const photo = msg.photo[msg.photo.length - 1];
         const fileId = photo.file_id;
-        const fileName = `img_${Date.now()}.jpg`;
+        
+        // Generate UUID v4 filename with jpg extension
+        const fileName = `${uuidv4()}.jpg`;
         
         // Download the image
         const filePath = await downloadImage(fileId, fileName);
