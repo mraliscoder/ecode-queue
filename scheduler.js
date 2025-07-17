@@ -66,9 +66,17 @@ async function processQueue() {
         
         await bot.sendPhoto(TARGET_CHANNEL, item.filePath, options);
         
-        console.log(`Successfully sent image ${item.fileName} to channel ${TARGET_CHANNEL}`);
+        console.log(`Successfully sent image ${item.fileName} to channel ${TARGET_CHANNEL}`);        
+    } catch (error) {
+        console.error(`Error sending image ${item.fileName}:`, error);
         
-        // Remove from queue
+        // If it's a file not found error, remove from queue
+        if (error.code === 'ENOENT') {
+            console.log(`File not found, removing from queue: ${item.fileName}`);
+            removeFromQueue(item.id);
+        }
+    } finally {
+                // Remove from queue
         removeFromQueue(item.id);
         
         // Delete the file after successful upload
@@ -78,18 +86,6 @@ async function processQueue() {
         } catch (deleteError) {
             console.error(`Error deleting file ${item.fileName}:`, deleteError);
         }
-        
-    } catch (error) {
-        console.error(`Error sending image ${item.fileName}:`, error);
-        
-        // If it's a file not found error, remove from queue
-        if (error.code === 'ENOENT') {
-            console.log(`File not found, removing from queue: ${item.fileName}`);
-            removeFromQueue(item.id);
-        }
-        // For other errors, keep the item in queue for retry
-        
-        process.exit(1);
     }
 }
 
